@@ -12,9 +12,8 @@ export class AttendancesController {
     return this.attendancesService.create(createAttendanceDto);
   }
 
-  @Get('/:userCode')
+  @Get(':userCode')
   findAll(@Param('userCode') userCode: string) {
-    console.log(userCode)
     return this.attendancesService.findAll(userCode);
   }
 

@@ -2,31 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { CreateAttendanceDto } from './dto/create-attendance.dto';
 import { UpdateAttendanceDto } from './dto/update-attendance.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { getTimeDifference } from 'src/utils/getTimeDifference';
 
 @Injectable()
 export class AttendancesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createAttendanceDto: CreateAttendanceDto) {
-    const { userCode, startDate } = createAttendanceDto
+    const { userCode, startDate } = createAttendanceDto;
 
     // Ensure the user exists
     const user = await this.prisma.user.findUnique({
-      where: { userCode }
-    })
+      where: { userCode },
+    });
 
     if (!user) {
-      throw new Error('User not found')
+      throw new Error('User not found');
     }
 
     const attendance = await this.prisma.attendance.create({
       data: {
         startDate,
         user: {
-          connect: { userCode }
-        }
-      }
-    })
+          connect: { userCode },
+        },
+      },
+    });
 
     return {
       attendance,
@@ -49,15 +50,29 @@ export class AttendancesService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} attendance`;
-  }
+  async update(id: number, updateAttendanceDto: UpdateAttendanceDto) {
+    const attendanceExists = await this.prisma.attendance.findUnique({
+      where: { id },
+    });
 
-  update(id: number, updateAttendanceDto: UpdateAttendanceDto) {
-    return `This action updates a #${id} attendance`;
-  }
+    if (!attendanceExists) {
+      throw new Error('Attendance not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} attendance`;
+    const { startDate } = attendanceExists;
+
+    const { endDate } = updateAttendanceDto;
+
+    const attendance = await this.prisma.attendance.update({
+      where: { id },
+      data: {
+        endDate,
+        hoursWorked: getTimeDifference(startDate, endDate),
+      },
+    });
+
+    return {
+      attendance,
+    };
   }
 }

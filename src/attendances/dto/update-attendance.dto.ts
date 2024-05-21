@@ -1,6 +1,7 @@
-import { IsDate } from 'class-validator';
+import { IsISO8601, IsNotEmpty } from 'class-validator';
 
 export class UpdateAttendanceDto {
-  @IsDate()
+  @IsNotEmpty()
+  @IsISO8601()
   endDate: Date;
 }
