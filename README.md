@@ -22,7 +22,7 @@ A aplicação estará disponível em http://localhost:3000.
 ## Rotas
 ### Criar Registro
 Rota: POST /attendances  
-Descrição: Cria um novo atendimento.  
+Descrição: Cria um novo registro.  
 Corpo da Requisição: CreateAttendanceDto  
 Exemplo de corpo da requisição:  
 
@@ -32,15 +32,15 @@ Exemplo de corpo da requisição:
   "startDate": "2024-05-21T08:00:00.000Z"
 }
 ```
-### Buscar Todos os Atendimentos de um Usuário
+### Buscar Todos os registros de um Usuário
 Rota: GET /attendances/:userCode  
-Descrição: Retorna todos os atendimentos de um usuário específico.  
+Descrição: Retorna todos os registros de um usuário específico.  
 Parâmetros de Rota: userCode - O código do usuário.  
 
-### Atualizar Atendimento
+### Atualizar Registro
 Rota: PATCH /attendances/:id  
-Descrição: Atualiza um atendimento existente.  
-Parâmetros de Rota: id - O ID do atendimento.  
+Descrição: Atualiza um registro existente.  
+Parâmetros de Rota: id - O ID do registro.  
 Corpo da Requisição: UpdateAttendanceDto  
 Exemplo de corpo da requisição:  
 
